@@ -104,21 +104,19 @@ laundry/
 - Git
 
 ### 1. Clone the repo
-
 ```bash
 git clone https://github.com/AryanGupta09/Laundryb.git
 git clone https://github.com/AryanGupta09/laundryf.git
 ```
 
 ### 2. Backend Setup
-
 ```bash
 cd backend
 npm install
 ```
 
 Create `.env` file:
-```env
+```
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/laundry-db
 NODE_ENV=development
@@ -132,14 +130,13 @@ npm run dev
 ```
 
 ### 3. Frontend Setup
-
 ```bash
 cd frontend
 npm install
 ```
 
 Create `.env` file:
-```env
+```
 VITE_API_URL=http://localhost:5000/api
 ```
 
@@ -149,7 +146,6 @@ npm run dev
 ```
 
 ### 4. Open in browser
-
 ```
 http://localhost:3000
 ```
@@ -161,22 +157,22 @@ http://localhost:3000
 ### Auth (Public)
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/login` | Login + get JWT token |
-| GET | `/api/auth/me` | Get logged-in user |
+| POST | /api/auth/register | Register new user |
+| POST | /api/auth/login | Login + get JWT token |
+| GET | /api/auth/me | Get logged-in user |
 
 ### Orders (Protected 🔒)
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/orders` | Create new order |
-| GET | `/api/orders` | Get all orders (with filters) |
-| GET | `/api/orders/:id` | Get single order by orderId |
-| PATCH | `/api/orders/:id/status` | Update order status |
+| POST | /api/orders | Create new order |
+| GET | /api/orders | Get all orders (with filters) |
+| GET | /api/orders/:id | Get single order by orderId |
+| PATCH | /api/orders/:id/status | Update order status |
 
 ### Dashboard (Protected 🔒)
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/dashboard` | Get stats & analytics |
+| GET | /api/dashboard | Get stats & analytics |
 
 ### Query Filters for GET /api/orders
 ```
@@ -259,11 +255,67 @@ Environment Variables:
 
 Import `backend/laundry-api.postman_collection.json` into Postman.
 
-**Steps:**
+Steps:
 1. Register a user → `POST /api/auth/register`
 2. Login → `POST /api/auth/login` → copy the token
 3. Add header to all requests: `Authorization: Bearer <token>`
 4. Create orders, view dashboard, update status
+
+---
+
+## 🤖 AI Usage Report
+
+### Tool Used
+**Claude AI** — used heavily throughout the project to scaffold, generate, and debug code.
+
+### Sample Prompts I Used
+
+**Prompt 1 — Full Backend:**
+> "Build a complete MERN stack backend for a Dry Cleaning Laundry Order Management System with Express, MongoDB, Mongoose, all routes, controllers, pre-save hooks, orderId auto-generation, and dashboard aggregation. Give 100% complete working code for every file."
+
+**Prompt 2 — Full Frontend:**
+> "Build a complete React.js frontend for a Laundry Order Management System with Vite, Axios, React Router, Dashboard page, Orders page with filters, Create Order form with live price preview, and Order Detail page with progress tracker."
+
+**Prompt 3 — JWT Auth:**
+> "Add JWT Authentication to my existing MERN Laundry system. Create User model, auth controller with register/login, JWT middleware, protected routes on backend, and Login/Register pages + AuthContext + ProtectedRoute on frontend."
+
+### What AI Got Right ✅
+- Complete folder structure in one shot
+- Mongoose pre-save hook for auto price calculation and orderId generation
+- All controllers and routes with proper error handling
+- React pages with hooks (useState, useEffect)
+- JWT auth flow end to end
+- Dashboard aggregation query
+
+### What AI Got Wrong / What I Fixed 🔧
+- **orderId increment** was buggy — AI used a simple count which caused duplicate IDs on concurrent requests. Fixed manually with a padded counter logic.
+- **CORS settings** were missing for production URLs — manually added `FRONTEND_URL` from `.env`
+- **Axios interceptor** was not handling 401 token expiry correctly — fixed the auto-logout logic manually
+- **Filter queries** in `GET /api/orders` had incorrect regex flags — fixed case-insensitive search manually
+- **CSS dark theme** needed manual adjustments — AI gave basic styling, I improved contrast and layout
+
+### Where I Wrote Code Manually 💻
+- Final `.env` configuration for both local and production
+- Render + Vercel deployment configuration
+- README documentation
+
+---
+
+## ⚖️ Tradeoffs
+
+### What I Skipped
+- **Role-based access control** — both admin and staff can do everything. With more time, I'd restrict certain actions to admin only.
+- **Pagination** — orders list loads all at once. Would add page-based loading for scale.
+- **Input validation** — basic validation only. Would add Joi or express-validator.
+- **Unit tests** — no tests written due to time constraint.
+
+### What I'd Improve With More Time
+- Add pagination to orders list
+- Role-based permissions (admin vs staff)
+- Email/SMS notification when order is READY
+- Export orders as PDF or Excel
+- Better mobile UI
+- Add refresh token mechanism
 
 ---
 
