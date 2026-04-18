@@ -13,6 +13,18 @@ A full-stack MERN application for managing dry cleaning orders with JWT authenti
 
 ---
 
+## 🔑 Test Credentials
+
+| Field | Value |
+|-------|-------|
+| Email | admin@laundrypro.com |
+| Password | admin123 |
+| Role | Admin |
+
+> Or register a new account at: https://laundryf.vercel.app/register
+
+---
+
 ## ✨ Features
 
 - 🔐 **JWT Authentication** — Login / Register with role-based access (Admin / Staff)
